@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorGrape">#052342</color>
+    <color name="colorGrape2">#697993</color>
+    <color name="colorOldGrape">#8595aa</color>
+    <color name="colorOatmeal">#eceff5</color>
+    <color name="colorStrawberry">#E50D31</color>
+    <color name="colorStrawberry2">#e20000</color>
+    <color name="colorBanana">#FFDD00</color>
+    <color name="colorDarkBanana">#998500</color>
+    <color name="colorThinPurple">#cad2de</color>
+    <color name="colorBlackCherry">#060102</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorInvisible">#00000000</color>
+    <color name="colorWhiteTransparency">#CCFFFFFF</color>
+    <color name="colorGrayTransparency">#CC888888</color>
+    <color name="colorGray">#cad2de</color>
+    <color name="colorDarkGray">#7a7e86</color>
+    <color name="colorWhiteGray">#AAAAAA</color>
+    <color name="colorVeryWhiteGray">#DDDDDD</color>
+    <color name="colorOrangeRed">#FF4500</color>
+    <color name="colorOrange">#FFA500</color>
+    <color name="colorOrange2">#FF9A0A</color>
+    <color name="colorTomato">#FF6347</color>
+    <color name="colorVanillaCream">#F9E5BC</color>
+    <color name="colorCrayolaPeach">#FFCBA4</color>
+    <color name="colorPear1">#E0EEDD</color>
+    <color name="colorPear2">#E7E4D2</color>
+    <color name="colorPear3">#E2ACC7</color>
+    <color name="colorPear4">#D76D9E</color>
+    <color name="colorGreenApple">#8DB600</color>
+    <color name="colorGreenApple2">#374a2b</color>
+    <color name="colorGreenApple3">#22442b</color>
+    <color name="colorDodgerBlue">#1E90FF</color>
+    <color name="colorDodgerBlueTransparency">#881E90FF</color>
+</resources>
