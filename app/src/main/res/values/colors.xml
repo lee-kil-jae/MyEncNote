@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="colorTransparent">#00000000</color>
     <color name="colorGrape">#052342</color>
     <color name="colorGrape2">#697993</color>
     <color name="colorOldGrape">#8595aa</color>

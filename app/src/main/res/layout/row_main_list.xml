@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="vmMain"
+            type="com.studiolkj.myencnote.viewModel.MainViewModel" />
+        <variable
+            name="memo"
+            type="com.studiolkj.myencnote.model.database.MemoData" />
+        <import
+            alias="util"
+            type="com.studiolkj.myencnote.common.Utils"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:onClick="@{()-> vmMain.onClickMemo(memo)}">
+        <RelativeLayout
+            android:id="@+id/rlMemoInfo"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:orientation="vertical"
+            randomDrawable="@{true}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMemoHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{memo.hint}"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/main_memo_text_normal"
+                android:singleLine="true"
+                android:layout_marginBottom="5dp"
+                tool:text="MEMO HINT"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEditedAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="@{util.editedAtString(memo.editedAt)}"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/main_memo_text_small"
+                android:layout_below="@+id/tvMemoHint"
+                tool:text="2021.03.05 11:34"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMemoOpenData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvEditedAt"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:maxLines="4"
+                android:text="@{memo.openData}"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/main_memo_text_normal"
+                android:visibility="@{util.falseIsVisible(memo.hasEnc)}"
+                tool:text="MEMO OPEN DATA..." />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLock"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_below="@+id/tvEditedAt"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:onClick="@{()->vmMain.onClickMemo(memo)}"
+                android:padding="5dp"
+                android:src="@drawable/ic_lock"
+                android:visibility="@{util.trueIsVisible(memo.hasEnc)}" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
