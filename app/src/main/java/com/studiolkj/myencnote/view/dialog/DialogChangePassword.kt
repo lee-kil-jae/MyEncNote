@@ -5,12 +5,25 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
+import com.studiolkj.myencnote.common.Locker
 import com.studiolkj.myencnote.model.InstancePassword
 import kotlinx.android.synthetic.main.dialog_changepassword.view.*
+import kotlinx.android.synthetic.main.dialog_changepassword.view.btnNo
+import kotlinx.android.synthetic.main.dialog_changepassword.view.btnYes
+import kotlinx.android.synthetic.main.dialog_changepassword.view.txtDesc
+import kotlinx.android.synthetic.main.dialog_changepassword.view.txtRemainInfinityLockCount
+import kotlinx.android.synthetic.main.dialog_changepassword.view.txtRemainTime
+import kotlinx.android.synthetic.main.dialog_check_password.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
+import java.util.*
 
 class DialogChangePassword {
     data class Builder(
@@ -71,14 +84,26 @@ class DialogChangePassword {
                     dialogView.btnYes.visibility = View.VISIBLE
                     dialogView.btnYes.text = getString(yesId)
                     dialogView.btnYes.setOnClickListener {
-                        if(hasCorrectEncKey(dialogView)) {
+                        MyApplication.prefs.lastRetryTime = System.currentTimeMillis()
+                        if (hasCorrectPassword(dialogView)) {
+                            MyApplication.prefs.retryCount = 0
+                            Locker.showRemainLockCount(dialogView.txtRemainInfinityLockCount)
+                            dialogView.txtRemainTime.visibility = View.GONE
                             val newPassword = dialogView.edtNewEncKey.text.toString().trim()
                             InstancePassword.setPassword(newPassword)
-                            onClickYes?.invoke(dialog, dialogView.edtCurrentEncKey.text.toString(), newPassword)
+                            onClickYes?.invoke(
+                                dialog,
+                                dialogView.edtCurrentEncKey.text.toString(),
+                                newPassword
+                            )
+                        } else {
+                            MyApplication.prefs.retryCount += 1
+                            Locker.showRemainLockCount(dialogView.txtRemainInfinityLockCount)
                         }
                     }
                 }
 
+                showLockTimer(dialogView.txtRemainInfinityLockCount, dialogView.txtRemainTime, dialogView.btnYes)
                 dialog?.setOnDismissListener {
                     onFinished?.invoke()
                 }
@@ -86,7 +111,28 @@ class DialogChangePassword {
             return dialog
         }
 
-        private fun hasCorrectEncKey(dialogView: View): Boolean {
+        private fun showLockTimer(lockCount: TextView, view: TextView, btnYes: Button) {
+            Timer().schedule(object : TimerTask(){
+                override fun run(){
+                    GlobalScope.launch(Dispatchers.Main) {
+                        Locker.showRemainLockCount(lockCount)
+                        if (Locker.remainLockSec() <= 0) {
+                            view.visibility = View.GONE
+                            btnYes.visibility = View.VISIBLE
+                        } else {
+                            view.text = String.format(
+                                view.context.getString(R.string.remain_time),
+                                Locker.remainLockSec()
+                            )
+                            view.visibility = View.VISIBLE
+                            btnYes.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            },0, 500)
+        }
+
+        private fun hasCorrectPassword(dialogView: View): Boolean {
             val currentEncKey = dialogView.edtCurrentEncKey.text.toString().trim()
             val newEncKey = dialogView.edtNewEncKey.text.toString().trim()
             val newEncKeyRe = dialogView.edtNewEncKeyRe.text.toString().trim()

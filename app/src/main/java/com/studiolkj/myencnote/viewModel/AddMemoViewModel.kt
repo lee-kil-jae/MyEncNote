@@ -1,9 +1,11 @@
 package com.studiolkj.myencnote.viewModel
 
 import android.view.View
+import android.widget.Toast
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.common.EventMemoUpdate
+import com.studiolkj.myencnote.common.Locker
 import com.studiolkj.myencnote.common.NotNullMutableLiveData
 import com.studiolkj.myencnote.common.Utils
 import com.studiolkj.myencnote.model.InstancePassword
@@ -51,6 +53,10 @@ class AddMemoViewModel(val db: MemoDao): BaseViewModel() {
         } else if (!InstancePassword.getPassword().isNullOrEmpty()) {
             saveMemo(true, hintString, dataString, InstancePassword.getPassword())
         }else {
+            if(Locker.hasInfinityLocked()){
+                Toast.makeText(view.context, R.string.infinity_locked, Toast.LENGTH_SHORT).show()
+                return
+            }
             DialogCheckPassword.Builder(view.context)
                 .setMessage(R.string.enter_the_password)
                 .setOnClickYes(R.string.ok) { dlg, password ->
@@ -66,10 +72,21 @@ class AddMemoViewModel(val db: MemoDao): BaseViewModel() {
     private fun saveMemo(hasEncrypt: Boolean, hint: String, data: String, password: String) {
         GlobalScope.launch(Dispatchers.IO) {
             if (hasEncrypt) {
-                val memo = MemoData(hasEnc.value, hint, System.currentTimeMillis(), "", Utils.encData(password, data))
+                val memo = MemoData(hasEnc.value,
+                    hint,
+                    System.currentTimeMillis(),
+                    Utils.getRandomResourceId(),
+                    "",
+                    Utils.encData(password, data))
                 db.insertMemoData(memo)
             } else {
-                val memo = MemoData(hasEnc.value, hint, System.currentTimeMillis(), data, null)
+                val memo = MemoData(
+                    hasEnc.value,
+                    hint,
+                    System.currentTimeMillis(),
+                    Utils.getRandomResourceId(),
+                    data,
+                    null)
                 db.insertMemoData(memo)
             }
 

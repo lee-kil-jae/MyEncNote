@@ -1,8 +1,10 @@
 package com.studiolkj.myencnote.viewModel
 
 import android.view.View
+import android.widget.Toast
 import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.common.EventMemoUpdate
+import com.studiolkj.myencnote.common.Locker
 import com.studiolkj.myencnote.common.NotNullMutableLiveData
 import com.studiolkj.myencnote.common.Utils
 import com.studiolkj.myencnote.model.InstancePassword
@@ -49,6 +51,10 @@ class EditMemoViewModel(val index: Int, val password: String, val db: MemoDao): 
     }
 
     fun onClickRemove(view: View) {
+        if(Locker.hasInfinityLocked()){
+            Toast.makeText(view.context, R.string.infinity_locked, Toast.LENGTH_SHORT).show()
+            return
+        }
         DialogCheckPassword.Builder(view.context)
             .setMessage(R.string.enter_remove_password)
             .setOnClickYes(R.string.ok) { dlg, password ->
@@ -77,6 +83,10 @@ class EditMemoViewModel(val index: Int, val password: String, val db: MemoDao): 
         } else if (!InstancePassword.getPassword().isNullOrEmpty()) {
             updateMemo(true, hintString, dataString, InstancePassword.getPassword())
         }else {
+            if(Locker.hasInfinityLocked()){
+                Toast.makeText(view.context, R.string.infinity_locked, Toast.LENGTH_SHORT).show()
+                return
+            }
             DialogCheckPassword.Builder(view.context)
                 .setMessage(R.string.enter_the_password)
                 .setOnClickYes(R.string.ok) { dlg, password ->

@@ -3,7 +3,10 @@ package com.studiolkj.myencnote.common
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
 import java.security.DigestException
 import java.security.MessageDigest
@@ -16,19 +19,24 @@ import javax.crypto.spec.SecretKeySpec
 object Utils {
 
     var randomIndex = 0
+    @JvmStatic
+    fun getRandomResourceId(): Int{
+        randomIndex += 1
+        return when(randomIndex%7){
+            0 -> R.drawable.bg_round10_banana
+            1 -> R.drawable.bg_round10_pear
+            2 -> R.drawable.bg_round10_pear2
+            3 -> R.drawable.bg_round10_pear3
+            4 -> R.drawable.bg_round10_greenapple
+            5 -> R.drawable.bg_round10_crayolapeach
+            else -> R.drawable.bg_round10_vanillacream
+        }
+    }
+
     @BindingAdapter("randomDrawable")
     @JvmStatic
-    fun randomDrawable(view : View, hasRandom: Boolean){
-        when(randomIndex%7){
-            0 -> view.setBackgroundResource(R.drawable.bg_round10_banana)
-            1 -> view.setBackgroundResource(R.drawable.bg_round10_greenapple)
-            2 -> view.setBackgroundResource(R.drawable.bg_round10_pear)
-            3 -> view.setBackgroundResource(R.drawable.bg_round10_pear2)
-            4 -> view.setBackgroundResource(R.drawable.bg_round10_pear3)
-            5 -> view.setBackgroundResource(R.drawable.bg_round10_crayolapeach)
-            else -> view.setBackgroundResource(R.drawable.bg_round10_vanillacream)
-        }
-        randomIndex += 1
+    fun randomDrawable(view : View, resourceId: Int){
+        view.setBackgroundResource(resourceId)
     }
 
     @JvmStatic

@@ -56,4 +56,10 @@
     <string name="secure_exception_rooting">루팅된 폰입니다. 앱을 종료합니다.</string>
     <string name="secure_exception_debugging">디버깅이 감지되었습니다.\n앱을 종료합니다.</string>
     <string name="secure_exception_crack">위변조된 앱 입니다.\n앱을 종료합니다.</string>
+
+    <string name="infinity_locked">앱이 영구적으로 잠겼습니다.\n암호화된 메모의 복원이 불가능합니다.</string>
+
+    <string name="remain_infinity_lock_count">영구적으로 잠기기까지 %d회 남았습니다.</string>
+    <string name="remain_time">잠김! %d초 남음.</string>
+
 </resources>

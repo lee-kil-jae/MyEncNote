@@ -2,12 +2,16 @@ package com.studiolkj.myencnote.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.Observer
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.common.EventMemoUpdate
+import com.studiolkj.myencnote.common.Locker
 import com.studiolkj.myencnote.common.SecureUtils
+import com.studiolkj.myencnote.common.Utils
 import com.studiolkj.myencnote.databinding.ActivityMainBinding
 import com.studiolkj.myencnote.model.InstancePassword
 import com.studiolkj.myencnote.model.database.MemoData
@@ -32,8 +36,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override val layoutResourceId: Int get() = R.layout.activity_main
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
-
-//    private var tempPassword = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,11 +83,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             return
         }
 
+        if(Locker.hasInfinityLocked()){
+            Toast.makeText(this@MainActivity, R.string.infinity_locked, Toast.LENGTH_SHORT).show()
+            return
+        }
         DialogCheckPassword.Builder(this@MainActivity)
             .setMessage(R.string.enter_the_password)
             .setOnClickYes(R.string.ok) { dlg, password ->
                 dlg.dismiss()
-                showSetting()
+                val intent = Intent(this@MainActivity, SettingActivity::class.java)
+                startActivity(intent)
             }.setOnClickNo(R.string.no) { dlg ->
                 dlg.dismiss()
             }.build()
@@ -101,11 +108,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             return
         }
 
+        if(Locker.hasInfinityLocked()){
+            Toast.makeText(this@MainActivity, R.string.infinity_locked, Toast.LENGTH_SHORT).show()
+            return
+        }
         DialogCheckPassword.Builder(this@MainActivity)
             .setMessage(R.string.enter_the_password)
             .setOnClickYes(R.string.ok) { dlg, password ->
                 dlg.dismiss()
-                showMemo(memo)
+                val intent = Intent(this@MainActivity, ViewMemoActivity::class.java)
+                intent.putExtra(ViewMemoActivity.INDEX, memo.index)
+                intent.putExtra(ViewMemoActivity.PASSWORD, password)
+                startActivity(intent)
             }.setOnClickNo(R.string.no) { dlg ->
                 dlg.dismiss()
             }.build()

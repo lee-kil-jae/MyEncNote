@@ -10,6 +10,7 @@ import android.util.Base64
 import android.widget.Toast
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
+import org.mindrot.jbcrypt.BCrypt
 import java.security.MessageDigest
 
 object SecureUtils {
@@ -21,18 +22,18 @@ object SecureUtils {
             finishApp(activity)
             return
         }
-
-        if(isRooting()){
-            Toast.makeText(activity, R.string.secure_exception_rooting, Toast.LENGTH_SHORT).show()
-            finishApp(activity)
-            return
-        }
-
-        if(isDebugEnable(activity) && isUsbConnected(activity)) {
-            Toast.makeText(activity, R.string.secure_exception_debugging, Toast.LENGTH_SHORT).show()
-            finishApp(activity)
-            return
-        }
+//
+//        if(isRooting()){
+//            Toast.makeText(activity, R.string.secure_exception_rooting, Toast.LENGTH_SHORT).show()
+//            finishApp(activity)
+//            return
+//        }
+//
+//        if(isDebugEnable(activity) && isUsbConnected(activity)) {
+//            Toast.makeText(activity, R.string.secure_exception_debugging, Toast.LENGTH_SHORT).show()
+//            finishApp(activity)
+//            return
+//        }
     }
 
     @JvmStatic
@@ -55,7 +56,6 @@ object SecureUtils {
             val signature = packageInfo.signatures[0]
             val messageDigest = MessageDigest.getInstance("SHA")
             messageDigest.update(signature.toByteArray())
-//            Log.d("SIGNATURE", "   - getHashKey: " + String(Base64.encode(messageDigest.digest(), Base64.DEFAULT)));
             return String(Base64.encode(messageDigest.digest(), Base64.DEFAULT))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -64,7 +64,7 @@ object SecureUtils {
     }
 
     private fun isCrack(activity: Activity): Boolean {
-        return MyApplication.prefs.secureHashKey.equals(getHashKey(activity))
+        return BCrypt.checkpw(getHashKey(activity), MyApplication.prefs.secureHashKey)
     }
 
     private fun isRooting(): Boolean {

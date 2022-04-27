@@ -14,14 +14,15 @@ import kotlinx.android.parcel.Parcelize
     indices = [Index(value = [INDEX])])
 @Parcelize
 data class MemoData(@ColumnInfo(name = "hasEnc") var hasEnc: Boolean = true,
-                     @ColumnInfo(name = "hint") var hint: String = "",
-                     @ColumnInfo(name = "editedAt") var editedAt: Long = 0L,
-                     @ColumnInfo(name = "openData") var openData: String = "",
-                     @ColumnInfo(name = "encData") var encData: ByteArray?
+                    @ColumnInfo(name = "hint") var hint: String = "",
+                    @ColumnInfo(name = "editedAt") var editedAt: Long = 0L,
+                    @ColumnInfo(name = "backgroundId") var backgroundId: Int = 0,
+                    @ColumnInfo(name = "openData") var openData: String = "",
+                    @ColumnInfo(name = "encData") var encData: ByteArray?
 ): Parcelable {
     @PrimaryKey(autoGenerate = true) var index: Int = 0
 
-    constructor() : this(true, "", 0L, "", null)
+    constructor() : this(true, "", 0L, 0, "", null)
     companion object{
         const val MEMO_TABLE_NAME = "tableMemo"
         const val INDEX = "index"

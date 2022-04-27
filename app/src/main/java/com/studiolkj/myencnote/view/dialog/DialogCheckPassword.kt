@@ -5,12 +5,26 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
+import com.studiolkj.myencnote.common.Locker
+import com.studiolkj.myencnote.common.Utils
 import com.studiolkj.myencnote.model.InstancePassword
+import kotlinx.android.synthetic.main.dialog_changepassword.view.*
 import kotlinx.android.synthetic.main.dialog_check_password.view.*
+import kotlinx.android.synthetic.main.dialog_check_password.view.btnNo
+import kotlinx.android.synthetic.main.dialog_check_password.view.btnYes
+import kotlinx.android.synthetic.main.dialog_check_password.view.txtDesc
+import kotlinx.android.synthetic.main.dialog_check_password.view.txtRemainInfinityLockCount
+import kotlinx.android.synthetic.main.dialog_check_password.view.txtRemainTime
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
+import java.util.*
 
 class DialogCheckPassword {
     data class Builder(
@@ -71,19 +85,48 @@ class DialogCheckPassword {
                     dialogView.btnYes.visibility = View.VISIBLE
                     dialogView.btnYes.text = getString(yesId)
                     dialogView.btnYes.setOnClickListener {
-                        if(hasCorrectPassword(dialogView)) {
+                        MyApplication.prefs.lastRetryTime = System.currentTimeMillis()
+                        if (hasCorrectPassword(dialogView)) {
+                            MyApplication.prefs.retryCount = 0
+                            Locker.showRemainLockCount(dialogView.txtRemainInfinityLockCount)
                             val password = dialogView.edtPassword.text.toString().trim()
                             InstancePassword.setPassword(password)
                             onClickYes?.invoke(dialog, password)
+                        } else {
+                            Locker.showRemainLockCount(dialogView.txtRemainInfinityLockCount)
+                            MyApplication.prefs.retryCount += 1
                         }
                     }
                 }
 
+                showLockTimer(dialogView.txtRemainInfinityLockCount, dialogView.txtRemainTime, dialogView.btnYes)
                 dialog?.setOnDismissListener {
                     onFinished?.invoke()
                 }
             }
             return dialog
+        }
+
+        private fun showLockTimer(lockCount: TextView, view: TextView, btnYes: Button) {
+            Timer().schedule(object : TimerTask(){
+                override fun run(){
+                    GlobalScope.launch(Dispatchers.Main) {
+                        Locker.showRemainLockCount(lockCount)
+                        if (Locker.remainLockSec() <= 0) {
+                            view.visibility = View.GONE
+                            btnYes.visibility = View.VISIBLE
+                        } else {
+
+                            view.text = String.format(
+                                view.context.getString(R.string.remain_time),
+                                Locker.remainLockSec()
+                            )
+                            view.visibility = View.VISIBLE
+                            btnYes.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            },0, 500)
         }
 
         private fun hasCorrectPassword(dialogView: View): Boolean {
