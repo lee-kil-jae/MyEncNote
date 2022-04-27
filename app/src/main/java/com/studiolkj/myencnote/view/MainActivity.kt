@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.common.EventMemoUpdate
+import com.studiolkj.myencnote.common.SecureUtils
 import com.studiolkj.myencnote.databinding.ActivityMainBinding
+import com.studiolkj.myencnote.model.InstancePassword
 import com.studiolkj.myencnote.model.database.MemoData
 import com.studiolkj.myencnote.model.main.ListAdapterMemo
 import com.studiolkj.myencnote.view.dialog.DialogCheckPassword
@@ -31,7 +33,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
 
-    private var tempPassword = ""
+//    private var tempPassword = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             showMemo(it)
         })
 
+        viewDataBinding.vmMain?.showSetting?.observe(this, Observer {
+            showSetting()
+        })
+
         EventBus.getDefault().register(this)
 
         load()
@@ -64,15 +70,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        tempPassword = ""
+        InstancePassword.setPassword("")
         EventBus.getDefault().unregister(this)
     }
 
-    private fun showMemo(memo: MemoData){
-        if(!tempPassword.isNullOrEmpty() || !memo.hasEnc){
-            val intent = Intent(this@MainActivity, ViewMemoActivity::class.java)
-            intent.putExtra(ViewMemoActivity.INDEX, memo.index)
-            intent.putExtra(ViewMemoActivity.PASSWORD, tempPassword)
+    private fun showSetting(){
+        if(!InstancePassword.getPassword().isNullOrEmpty()){
+            val intent = Intent(this@MainActivity, SettingActivity::class.java)
             startActivity(intent)
             return
         }
@@ -81,7 +85,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             .setMessage(R.string.enter_the_password)
             .setOnClickYes(R.string.ok) { dlg, password ->
                 dlg.dismiss()
-                tempPassword = password
+                showSetting()
+            }.setOnClickNo(R.string.no) { dlg ->
+                dlg.dismiss()
+            }.build()
+            .show()
+    }
+
+    private fun showMemo(memo: MemoData){
+        if(!InstancePassword.getPassword().isNullOrEmpty() || !memo.hasEnc){
+            val intent = Intent(this@MainActivity, ViewMemoActivity::class.java)
+            intent.putExtra(ViewMemoActivity.INDEX, memo.index)
+            intent.putExtra(ViewMemoActivity.PASSWORD, InstancePassword.getPassword())
+            startActivity(intent)
+            return
+        }
+
+        DialogCheckPassword.Builder(this@MainActivity)
+            .setMessage(R.string.enter_the_password)
+            .setOnClickYes(R.string.ok) { dlg, password ->
+                dlg.dismiss()
                 showMemo(memo)
             }.setOnClickNo(R.string.no) { dlg ->
                 dlg.dismiss()

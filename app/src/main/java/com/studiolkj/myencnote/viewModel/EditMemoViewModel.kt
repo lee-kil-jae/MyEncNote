@@ -5,6 +5,7 @@ import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.common.EventMemoUpdate
 import com.studiolkj.myencnote.common.NotNullMutableLiveData
 import com.studiolkj.myencnote.common.Utils
+import com.studiolkj.myencnote.model.InstancePassword
 import com.studiolkj.myencnote.model.database.MemoDao
 import com.studiolkj.myencnote.model.database.MemoData
 import com.studiolkj.myencnote.view.dialog.DialogCheckPassword
@@ -73,7 +74,9 @@ class EditMemoViewModel(val index: Int, val password: String, val db: MemoDao): 
 
         if (!hasEnc.value) {
             updateMemo(false, hintString, dataString, "")
-        } else {
+        } else if (!InstancePassword.getPassword().isNullOrEmpty()) {
+            updateMemo(true, hintString, dataString, InstancePassword.getPassword())
+        }else {
             DialogCheckPassword.Builder(view.context)
                 .setMessage(R.string.enter_the_password)
                 .setOnClickYes(R.string.ok) { dlg, password ->

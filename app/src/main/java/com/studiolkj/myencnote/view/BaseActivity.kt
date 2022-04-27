@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import com.studiolkj.myencnote.common.SecureUtils
 import com.studiolkj.myencnote.viewModel.BaseViewModel
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
@@ -23,6 +24,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        SecureUtils.checkSecure(this@BaseActivity)
 //        setFullScreen()
 //        val secureViolation = SecureUtils.checkSecure(this)
 //        if(secureViolation != SecureUtils.SECURE_OK){

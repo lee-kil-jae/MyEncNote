@@ -9,10 +9,10 @@ import android.widget.Toast
 import com.studiolkj.myencnote.MyApplication
 import com.studiolkj.myencnote.R
 import com.studiolkj.myencnote.model.InstancePassword
-import kotlinx.android.synthetic.main.dialog_check_password.view.*
+import kotlinx.android.synthetic.main.dialog_changepassword.view.*
 import org.mindrot.jbcrypt.BCrypt
 
-class DialogCheckPassword {
+class DialogChangePassword {
     data class Builder(
         var context: Context? = null,
         var messageId: Int = -1,
@@ -20,7 +20,7 @@ class DialogCheckPassword {
         var yesId: Int = -1,
         var onFinished: (()->Unit)? = null,
         var onClickNo: ((AlertDialog)->Unit)? = null,
-        var onClickYes: ((AlertDialog, String)->Unit)? = null
+        var onClickYes: ((AlertDialog, String, String)->Unit)? = null
     ){
         lateinit var dialog: AlertDialog
         fun context(context: Context) = apply { this.context = context }
@@ -30,14 +30,14 @@ class DialogCheckPassword {
             this.noId = stringId
             this.onClickNo = onClickNo
         }
-        fun setOnClickYes(stringId: Int, onClickYes: ((AlertDialog, String) -> Unit)) = apply {
+        fun setOnClickYes(stringId: Int, onClickYes: ((AlertDialog, String, String) -> Unit)) = apply {
             this.yesId = stringId
             this.onClickYes = onClickYes
         }
         fun build(): AlertDialog {
             context?.run {
                 val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                val dialogView = inflater.inflate(R.layout.dialog_check_password, null)
+                val dialogView = inflater.inflate(R.layout.dialog_changepassword, null)
                 dialog = AlertDialog.Builder(this)
                     .setView(dialogView)
                     .create()
@@ -71,10 +71,10 @@ class DialogCheckPassword {
                     dialogView.btnYes.visibility = View.VISIBLE
                     dialogView.btnYes.text = getString(yesId)
                     dialogView.btnYes.setOnClickListener {
-                        if(hasCorrectPassword(dialogView)) {
-                            val password = dialogView.edtPassword.text.toString().trim()
-                            InstancePassword.setPassword(password)
-                            onClickYes?.invoke(dialog, password)
+                        if(hasCorrectEncKey(dialogView)) {
+                            val newPassword = dialogView.edtNewEncKey.text.toString().trim()
+                            InstancePassword.setPassword(newPassword)
+                            onClickYes?.invoke(dialog, dialogView.edtCurrentEncKey.text.toString(), newPassword)
                         }
                     }
                 }
@@ -86,16 +86,23 @@ class DialogCheckPassword {
             return dialog
         }
 
-        private fun hasCorrectPassword(dialogView: View): Boolean {
-            val password = dialogView.edtPassword.text.toString().trim()
+        private fun hasCorrectEncKey(dialogView: View): Boolean {
+            val currentEncKey = dialogView.edtCurrentEncKey.text.toString().trim()
+            val newEncKey = dialogView.edtNewEncKey.text.toString().trim()
+            val newEncKeyRe = dialogView.edtNewEncKeyRe.text.toString().trim()
 
-            if (password.isNullOrEmpty() || password.length < 4) {
+            if (currentEncKey.isNullOrEmpty() || currentEncKey.length < 4 || newEncKey.isNullOrEmpty() || newEncKey.length < 4) {
                 Toast.makeText(dialogView.context, R.string.correct_password1, Toast.LENGTH_SHORT).show()
                 return false
             }
 
-            if (!BCrypt.checkpw(password, MyApplication.prefs.hashKey)){
+            if (!BCrypt.checkpw(currentEncKey, MyApplication.prefs.hashKey)){
                 Toast.makeText(dialogView.context, R.string.correct_password3, Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            if (!newEncKey.equals(newEncKeyRe)){
+                Toast.makeText(dialogView.context, R.string.correct_password2, Toast.LENGTH_SHORT).show()
                 return false
             }
 

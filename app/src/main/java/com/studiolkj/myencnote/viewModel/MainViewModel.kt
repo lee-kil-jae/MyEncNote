@@ -24,6 +24,7 @@ class MainViewModel(val db: MemoDao): BaseViewModel() {
 
     val addMemo: MutableLiveData<Boolean> = MutableLiveData()
     val showMemo: MutableLiveData<MemoData> = MutableLiveData()
+    val showSetting: MutableLiveData<Boolean> = MutableLiveData()
     val hasEmptyMemo: NotNullMutableLiveData<Int> = NotNullMutableLiveData(View.GONE)
     val hasRefresing: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(false)
 
@@ -54,6 +55,10 @@ class MainViewModel(val db: MemoDao): BaseViewModel() {
             }
         }
         return pagedListBuilder.setInitialLoadKey(0).build()
+    }
+
+    fun onClickSetting(view: View) {
+        showSetting.postValue(true)
     }
 
     fun onClickMemo(data: MemoData) {

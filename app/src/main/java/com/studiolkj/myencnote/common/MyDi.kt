@@ -2,10 +2,7 @@ package com.studiolkj.myencnote.common
 
 import com.studiolkj.myencnote.model.database.MemoData
 import com.studiolkj.myencnote.model.database.MemoDatabase
-import com.studiolkj.myencnote.viewModel.AddMemoViewModel
-import com.studiolkj.myencnote.viewModel.EditMemoViewModel
-import com.studiolkj.myencnote.viewModel.MainViewModel
-import com.studiolkj.myencnote.viewModel.ViewMemoViewModel
+import com.studiolkj.myencnote.viewModel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -30,6 +27,10 @@ var viewModelPart = module {
     viewModel {
             (index: Int, password: String) ->
         EditMemoViewModel(index, password, get())
+    }
+
+    viewModel {
+        SettingViewModel()
     }
 }
 

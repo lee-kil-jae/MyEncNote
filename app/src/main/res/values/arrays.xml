@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="holding_times">
+        <item>기억 안함</item>
+        <item>10초</item>
+        <item>20초</item>
+        <item>30초</item>
+        <item>40초</item>
+        <item>50초</item>
+        <item>1분</item>
+        <item>2분</item>
+        <item>3분</item>
+    </string-array>
+    <string-array name="retry_types">
+        <item>횟수 제한 없음</item>
+        <item>5회 이상 실패 시 + 5초씩 증가</item>
+        <item>5회 이상 실패 시 + 10초씩 증가</item>
+        <item>5회 이상 실패 시 + 30초씩 증가</item>
+        <item>5회 이상 실패 시 + 1분씩 증가</item>
+        <item>5회 이상 실패 시 + 3분씩 증가</item>
+    </string-array>
+    <string-array name="lock_types">
+        <item>완전 잠김 없음</item>
+        <item>30회 이상 실패 시 완전 잠김</item>
+        <item>40회 이상 실패 시 완전 잠김</item>
+        <item>50회 이상 실패 시 완전 잠김</item>
+        <item>100회 이상 실패 시 완전 잠김</item>
+    </string-array>
+</resources>
