@@ -109,13 +109,4 @@ object Utils {
         }
         return hash
     }
-    @JvmStatic
-    fun createCryptoKey(): String {
-        val ALLOWED_CHARACTERS = "qw01erty23uiop45as6dfghj7klzxc89vbnm"
-        val random = Random()
-        val sb = StringBuilder(16)
-        for (i in 0 until 16)
-            sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
-        return sb.toString()
-    }
 }
