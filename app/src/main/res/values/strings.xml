@@ -62,4 +62,6 @@
     <string name="remain_infinity_lock_count">영구적으로 잠기기까지 %d회 남았습니다.</string>
     <string name="remain_time">잠김! %d초 남음.</string>
 
+    <string name="app_version">* 길재의 메모장 Version</string>
+
 </resources>

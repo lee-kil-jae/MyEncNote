@@ -22,18 +22,18 @@ object SecureUtils {
             finishApp(activity)
             return
         }
-//
-//        if(isRooting()){
-//            Toast.makeText(activity, R.string.secure_exception_rooting, Toast.LENGTH_SHORT).show()
-//            finishApp(activity)
-//            return
-//        }
-//
-//        if(isDebugEnable(activity) && isUsbConnected(activity)) {
-//            Toast.makeText(activity, R.string.secure_exception_debugging, Toast.LENGTH_SHORT).show()
-//            finishApp(activity)
-//            return
-//        }
+
+        if(isRooting()){
+            Toast.makeText(activity, R.string.secure_exception_rooting, Toast.LENGTH_SHORT).show()
+            finishApp(activity)
+            return
+        }
+
+        if(isDebugEnable(activity) && isUsbConnected(activity)) {
+            Toast.makeText(activity, R.string.secure_exception_debugging, Toast.LENGTH_SHORT).show()
+            finishApp(activity)
+            return
+        }
     }
 
     @JvmStatic

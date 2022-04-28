@@ -36,6 +36,7 @@ class SettingViewModel: BaseViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+
     }
 
     fun onSelectHoldingTime(index: Int) {

@@ -24,12 +24,12 @@ object Utils {
         randomIndex += 1
         return when(randomIndex%7){
             0 -> R.drawable.bg_round10_banana
-            1 -> R.drawable.bg_round10_pear
+            1 -> R.drawable.bg_round10_vanillacream
             2 -> R.drawable.bg_round10_pear2
             3 -> R.drawable.bg_round10_pear3
             4 -> R.drawable.bg_round10_greenapple
             5 -> R.drawable.bg_round10_crayolapeach
-            else -> R.drawable.bg_round10_vanillacream
+            else -> R.drawable.bg_round10_pear
         }
     }
 

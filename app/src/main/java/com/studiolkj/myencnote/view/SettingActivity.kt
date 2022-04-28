@@ -13,6 +13,7 @@ import com.studiolkj.myencnote.model.main.ListAdapterMemo
 import com.studiolkj.myencnote.view.dialog.DialogCheckPassword
 import com.studiolkj.myencnote.view.dialog.DialogInputPassword
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_setting.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -32,6 +33,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
         viewDataBinding.vmSetting = getViewModel()
         viewDataBinding.lifecycleOwner = this
 
+        tvVersion.text = getString(R.string.app_version) + " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName
         initObserve(viewDataBinding.vmSetting)
     }
 
