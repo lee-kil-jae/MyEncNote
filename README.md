@@ -4,6 +4,7 @@
 1. 메모를 안전하게 지키자.
 2. 하지만 앱을 사용하는데 불편하지 않게 하자.
 
+
 목표 달성 방법
 1. 메모를 안전하게 지키자.
 	- 비대칭키 + 대칭키 암호화 방식으로 메모 암호화
@@ -16,7 +17,7 @@
 	- 중요도가 낮은 메모는 암호화 없이 저장되고 바로 접근 가능하도록 개발
 	- 사용자 설정으로 제약 기능을 가변적으로 조절할 수 있도록 개발
 
+
 기획
-Tool: 카카오븐
-URL: https://ovenapp.io/view/GaunE4YwLYYcqh04iCLpC6f6FHPxk3wq#u9ObC
+https://ovenapp.io/view/GaunE4YwLYYcqh04iCLpC6f6FHPxk3wq#u9ObC
 
