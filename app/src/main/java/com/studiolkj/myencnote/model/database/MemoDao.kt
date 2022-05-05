@@ -27,5 +27,4 @@ interface MemoDao {
 
     @Delete
     fun deleteMemoData(data: MemoData)
-
 }
