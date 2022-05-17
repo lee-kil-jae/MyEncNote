@@ -18,11 +18,10 @@ import javax.crypto.spec.SecretKeySpec
 
 object Utils {
 
-    var randomIndex = 0
     @JvmStatic
     fun getRandomResourceId(): Int{
-        randomIndex += 1
-        return when(randomIndex%7){
+        MyApplication.prefs.noteColorIndex += 1
+        return when(MyApplication.prefs.noteColorIndex%7){
             0 -> R.drawable.bg_round10_banana
             1 -> R.drawable.bg_round10_vanillacream
             2 -> R.drawable.bg_round10_pear2

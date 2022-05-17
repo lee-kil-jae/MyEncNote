@@ -15,6 +15,7 @@ class MyEncNotePref(context: Context) {
 
         val KEY_RETRY_COUNT = "retry_count"
         val KEY_LAST_RETRY_TIME = "last_retry_time"
+        val KEY_NOTE_COLOR_INDEX = "note_color_index"
     }
 
     private val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, 0)
@@ -42,6 +43,10 @@ class MyEncNotePref(context: Context) {
     var holdingTime: Int
         get()  = prefs.getInt(KEY_HOLDING_TIME, 6)
         set(value) = prefs.edit().putInt(KEY_HOLDING_TIME, value).apply()
+
+    var noteColorIndex: Int
+        get()  = prefs.getInt(KEY_NOTE_COLOR_INDEX, 0)
+        set(value) = prefs.edit().putInt(KEY_NOTE_COLOR_INDEX, value).apply()
 
     var secureHashKey: String
         get()  = prefs.getString(KEY_SECURE_HASK_KEY, "\$2a\$11\$loaOZMJYnn6fdFBPomtSVOvfDzqU4AjKWm8p978nPx3RPY/cKmPwa") ?: "\$2a\$11\$loaOZMJYnn6fdFBPomtSVOvfDzqU4AjKWm8p978nPx3RPY/cKmPwa"

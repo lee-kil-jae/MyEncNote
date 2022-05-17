@@ -1,7 +1,6 @@
 package com.studiolkj.myencnote
 
 import android.app.Application
-import com.facebook.drawee.backends.pipeline.Fresco
 import com.studiolkj.myencnote.common.MyEncNotePref
 import com.studiolkj.myencnote.common.myDiModule
 import org.koin.android.ext.koin.androidContext
@@ -19,9 +18,6 @@ class MyApplication: Application() {
 
         // init Preference
         prefs = MyEncNotePref(applicationContext)
-
-        // init Fresco
-        Fresco.initialize(applicationContext)
 
         // init Koin
         startKoin {
